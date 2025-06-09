@@ -6,14 +6,36 @@ on:
 jobs:
   triage:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
       - name: Label issue
-        run: |
-          if (contains(github.event.issue.body, 'bug')) {
-            echo '::add-labels: bug';
-          } else if (contains(github.event.issue.body, 'feature')) {
-            echo '::add-labels: feature';
-          } else {
-            echo 'Labeling issue as needs-triage';
-            echo '::add-labels: needs-triage';
-          }
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issueBody = context.payload.issue.body || '';
+            if (issueBody.includes('bug')) {
+              github.rest.issues.addLabels({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: ['bug']
+              });
+              console.log('Added bug label');
+            } else if (issueBody.includes('feature')) {
+              github.rest.issues.addLabels({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: ['feature']
+              });
+              console.log('Added feature label');
+            } else {
+              github.rest.issues.addLabels({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: ['needs-triage']
+              });
+              console.log('Added needs-triage label');
+            }
