@@ -5,7 +5,19 @@ on:
     branches: [main]
 
 jobs:
-    MyFirstJob:
-        runs-on: ubuntu-latest
-        steps:
-        - run: echo "👋 Hello World!"
+  MyFirstJob:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Hello World step
+        run: echo "👋 Hello World!"
+    
+      - name: Checkout code
+        uses: actions/checkout@v4
+    
+      - name: List files in the repository
+        run: |
+          echo "The repository ${{ github.repository }} contains the following files:"
+          tree
+          echo "listing via ls -la"
+          ls -la
