@@ -1,0 +1,19 @@
+# Copy this file into your repository at: .github/workflows/label_new_issues.yml
+# Replace "aloiswirth/manning_gh_action" with the repo that hosts the reusable workflow if you fork it.
+# Optionally replace "@main" with a release tag or commit SHA for immutable pinning.
+#
+# Requirements:
+# - The called repository (aloiswirth/manning_gh_action) must be public, OR if private, the caller
+#   must be in the same org/enterprise with appropriate access (GitHub limitation for reusable workflows).
+
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  label-new-issues:
+    permissions:
+      issues: write
+    uses: aloiswirth/manning_gh_action/.github/workflows/label_new_issues.yml@main
+    secrets: inherit
